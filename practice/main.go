@@ -17,8 +17,12 @@ func main() {
 	router.LoadHTMLGlob("views/*.html")
 
 	router.GET("/", func(c *gin.Context) {
-		count.Count++
 		c.HTML(http.StatusOK, "index", count) // Using index and not index.html because is identifying the block, not the file
+	})
+
+	router.POST("/count", func(c *gin.Context) {
+		count.Count++
+		c.HTML(http.StatusOK, "count", count) // Using index and not index.html because is identifying the block, not the file
 	})
 
 	router.Run(":8080")
