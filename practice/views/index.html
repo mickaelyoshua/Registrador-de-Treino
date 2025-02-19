@@ -8,14 +8,38 @@
 		<script src="https://unpkg.com/htmx.org@2.0.4" integrity="sha384-HGfztofotfshcF7+8n44JQL2oJmowVChPTg48S+jvZoztPfvwD79OC/LTtG6dMp+" crossorigin="anonymous"></script>
 	</head>
 	<body>
-		<div id="count">
-			{{ template "count" . }}
-		</div>
-		<button hx-target="#count" hx-post="/count">Count</button>
+		{{ template "form" .Form }}
+		<hr>
+		{{ template "display" .Data }}
 	</body>
 </html>
 {{ end }}
 
-{{ block "count" . }}
-	Count {{ .Count }}
+{{ block "form" . }}
+<form hx-swap="outerHTML" hx-target="#contacts" hx-post="/contacts">
+	name: <input
+		{{ if .Values.name }} value="{{ .Values.name }}" {{ end }}
+		type="text" name="name">
+
+	email: <input
+		{{ if .Values.email }} value="{{ .Values.email }}" {{ end }}
+		type="text" name="email">
+
+	{{ if .Erros.email }}
+	<div style="color: red;">{{ .Errors.email }}</div>
+	{{ end }}
+
+	<button type="submit">Create Contact</button>
+</form>
+{{ end }}
+
+{{ block "display" . }}
+<div id="contacts" style="display: flex; flex-direction: column;">
+	{{ range .Contacts }}
+	<div>
+		Name: <span>{{ .Name }}</span>
+		Email: <span>{{ .Email }}</span>
+	</div>
+	{{ end }}
+</div>
 {{ end }}
