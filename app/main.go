@@ -7,7 +7,10 @@ import (
 
 func main() {
 	server := gin.Default()
-	server.LoadHTMLGlob("templates/*")
+	server.LoadHTMLGlob("views/*.html")
+
+	server.GET("/register", handlers.Register)
+	server.GET("/login", handlers.Login)
 	server.GET("/", handlers.DefaultHandler)
 
 	server.Run(":8080")
