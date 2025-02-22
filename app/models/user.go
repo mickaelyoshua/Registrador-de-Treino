@@ -12,6 +12,7 @@ import (
 )
 
 type User struct {
+	Name string `bson:"name,omitempty"`
 	Id       int `bson:"_id,omitempty"`
 	Email    string `bson:"email,required"`
 	Password string `bson:"password,required"`
@@ -52,5 +53,5 @@ func (u User) EmailExists() bool {
 }
 
 func (u User) ValidateCredentials() error {
-
+	return nil
 }
