@@ -23,3 +23,8 @@ func Index(ctx *gin.Context) {
 	err := Render(ctx, http.StatusOK, view.Index())
 	HandleRenderError(err)
 }
+
+func Register(ctx *gin.Context) {
+	err := Render(ctx, http.StatusOK, view.Register())
+	HandleRenderError(err)
+}

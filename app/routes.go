@@ -7,4 +7,5 @@ import (
 
 func Routes(router *gin.Engine) {
 	router.GET("/", handler.Index)
+	router.GET("/register", handler.Register)
 }
