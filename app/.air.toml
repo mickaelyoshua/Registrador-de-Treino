@@ -5,11 +5,11 @@ tmp_dir = "tmp"
 [build]
   args_bin = []
   bin = "./tmp/main"
-  cmd = "templ generate && go build -o ./tmp/main ."
-  delay = 1000
+  cmd = "templ generate && go build -o ./tmp/main ." # include generate templ
+  delay = 1 # fast as possible
   exclude_dir = ["assets", "tmp", "vendor", "testdata"]
   exclude_file = []
-  exclude_regex = ["_test.go"]
+  exclude_regex = ["_test.go", "_templ.go"] # exclude "_templ.go" files
   exclude_unchanged = false
   follow_symlink = false
   full_bin = ""
@@ -35,7 +35,7 @@ tmp_dir = "tmp"
   watcher = "cyan"
 
 [log]
-  main_only = false
+  main_only = true # cleaner output with "true"
   silent = false
   time = false
 
