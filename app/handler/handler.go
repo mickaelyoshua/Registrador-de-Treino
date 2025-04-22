@@ -19,12 +19,25 @@ func HandleRenderError(err error) {
 	}
 }
 
+// Main page
 func Index(ctx *gin.Context) {
 	err := Render(ctx, http.StatusOK, view.Index())
 	HandleRenderError(err)
 }
 
+// Authentication
 func Register(ctx *gin.Context) {
 	err := Render(ctx, http.StatusOK, view.Register())
 	HandleRenderError(err)
+}
+
+func ConfirmPass(ctx *gin.Context) {
+	pass := ctx.Request.FormValue("password")
+	confirm := ctx.Request.FormValue("confirmPassword")
+
+	if !helper.validatePassword(pass, confirm) {
+		ctx.String(http.StatusBadRequest, "Senhas estão diferentes")
+	} else {
+		ctx.Status(http.StatusOK)
+	}
 }

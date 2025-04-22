@@ -6,6 +6,10 @@ import (
 )
 
 func Routes(router *gin.Engine) {
+	// Main page
 	router.GET("/", handler.Index)
+
+	// Authentication
 	router.GET("/register", handler.Register)
+	router.POST("/confirmPass", handler.ConfirmPass)
 }
