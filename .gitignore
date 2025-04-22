@@ -26,3 +26,6 @@ go.work.sum
 
 # Temporary folders
 *tmp/
+
+# Database
+db_data
