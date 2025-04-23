@@ -1,13 +1,14 @@
 package handler
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 
 	"github.com/a-h/templ"
 	"github.com/gin-gonic/gin"
-	"github.com/mickaelyoshua7674/Registrador-de-Treino/view"
 	"github.com/mickaelyoshua7674/Registrador-de-Treino/helper"
+	"github.com/mickaelyoshua7674/Registrador-de-Treino/view"
 )
 
 func Render(ctx *gin.Context, status int, template templ.Component) error {
@@ -35,6 +36,7 @@ func Register(ctx *gin.Context) {
 func ConfirmPass(ctx *gin.Context) {
 	pass := ctx.Request.FormValue("password")
 	confirm := ctx.Request.FormValue("confirmPassword")
+	fmt.Println(pass, confirm)
 
 	if !helper.ValidatePassword(pass, confirm) {
 		ctx.String(http.StatusBadRequest, "Senhas estão diferentes")

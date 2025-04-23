@@ -25,10 +25,11 @@ templ Register() {
 				</p>
 				<p>
 					<label for="password">Confirmar Senha</label>
-					<input type="password" name="confirmPassword" value="" placeholder="Senha"
-						hx-get="/confirmPass"
+					<input type="password" name="confirmPassword" value="" placeholder="Confirmar Senha"
+						hx-post="/confirmPass"
 						hx-trigger="change, keyup delay:200ms changed"
-						hx-params="password,confirmPassword"
+						hx-include="[name='password']"
+						hx-target="next .error"
 						hx-target-4xx="next .error">
 					<span class="error"></span>
 				</p>
