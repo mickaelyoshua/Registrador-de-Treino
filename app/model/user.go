@@ -29,6 +29,5 @@ func NewUser(username, email, password string, created, updated time.Time) User 
 func (u User) Save(client *mongo.Client) error {
 	coll := client.Database("workout_register").Collection("user")
 	_, err := coll.InsertOne(context.TODO(), u)
-
 	return err
 }

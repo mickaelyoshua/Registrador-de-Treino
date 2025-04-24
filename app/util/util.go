@@ -3,9 +3,7 @@ package util
 import (
 	"errors"
 	"log"
-	"os"
 	"time"
-	_ "time/tzdata"
 
 	"github.com/golang-jwt/jwt/v5"
 	"golang.org/x/crypto/bcrypt"
@@ -62,10 +60,11 @@ func VerifyToken(token string) (string, error) {
 	return "", nil
 }
 
+const location = "America/Sao_Paulo"
 func GetLocTimeZone() *time.Location {
-	loc, err := time.LoadLocation(os.Getenv("TZ"))
+	loc, err := time.LoadLocation(location)
 	if err != nil {
-		log.Fatalf("Error getting TZ - '%v': \n%v", os.Getenv("TZ"), err)
+		log.Fatalf("Error getting TZ - '%v': \n%v", location, err)
 		return nil
 	}
 	return loc
