@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"time"
+	_ "time/tzdata"
 
 	"github.com/a-h/templ"
 	"github.com/gin-gonic/gin"
@@ -50,8 +51,8 @@ func Register(ctx *gin.Context) {
 		log.Fatalf("Error hashing password: \n%v", err)
 	}
 
-	loc := util.GetLocTimeZone()
-	user := model.NewUser(username, email, password, time.Now().In(loc), time.Now().In(loc))
+	time.Local = util.GetLocTimeZone()
+	user := model.NewUser(username, email, password, time.Now(), time.Now())
 	err = user.Save(client)
 	if err != nil {
 		log.Fatalf("Error saving User: \n%v", err)

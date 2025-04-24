@@ -2,10 +2,10 @@ package util
 
 import (
 	"errors"
-	"fmt"
 	"log"
 	"os"
 	"time"
+	_ "time/tzdata"
 
 	"github.com/golang-jwt/jwt/v5"
 	"golang.org/x/crypto/bcrypt"
@@ -68,9 +68,5 @@ func GetLocTimeZone() *time.Location {
 		log.Fatalf("Error getting TZ - '%v': \n%v", os.Getenv("TZ"), err)
 		return nil
 	}
-	fmt.Println()
-	fmt.Println(loc)
-	fmt.Println(loc.String())
-	fmt.Println()
 	return loc
 }
