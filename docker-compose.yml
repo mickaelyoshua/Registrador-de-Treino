@@ -43,6 +43,7 @@ services:
       - 8080:8080
     environment:
       MONGODB_URI: mongodb://root:example@mongo:27017/
+      TZ: America/Sao_Paulo # Set timezone to Sao Paulo - package 'time' will look for this env variable
     #command: tail -F anything
     command: air
 

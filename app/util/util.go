@@ -1,11 +1,14 @@
 package util
 
 import (
-	"time"
 	"errors"
+	"fmt"
+	"log"
+	"os"
+	"time"
 
-	"golang.org/x/crypto/bcrypt"
 	"github.com/golang-jwt/jwt/v5"
+	"golang.org/x/crypto/bcrypt"
 )
 
 // About password
@@ -50,11 +53,24 @@ func VerifyToken(token string) (string, error) {
 		return "", errors.New("invalid token")
 	}
 
-	claims, ok := parsedToken.Claims.(jwt.MapClaims)
+	_, ok := parsedToken.Claims.(jwt.MapClaims)
 	if !ok {
 		return "", errors.New("invalid token claims")
 	}
 
-	id := string(claims["id"])
-	return id, nil
+	//id := claims["id"]
+	return "", nil
+}
+
+func GetLocTimeZone() *time.Location {
+	loc, err := time.LoadLocation(os.Getenv("TZ"))
+	if err != nil {
+		log.Fatalf("Error getting TZ - '%v': \n%v", os.Getenv("TZ"), err)
+		return nil
+	}
+	fmt.Println()
+	fmt.Println(loc)
+	fmt.Println(loc.String())
+	fmt.Println()
+	return loc
 }

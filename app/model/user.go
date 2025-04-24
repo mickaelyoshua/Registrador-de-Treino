@@ -2,8 +2,6 @@ package model
 
 import (
 	"context"
-	"encoding/json"
-	"fmt"
 	"time"
 
 	"go.mongodb.org/mongo-driver/v2/mongo"
@@ -30,11 +28,7 @@ func NewUser(username, email, password string, created, updated time.Time) User 
 
 func (u User) Save(client *mongo.Client) error {
 	coll := client.Database("workout_register").Collection("user")
-	writeResult, err := coll.InsertOne(context.TODO(), u)
-
-	writeJsonData, _ := json.MarshalIndent(writeResult, "", "	")
-	fmt.Printf("%s\n", writeJsonData)
-	fmt.Println("Write result:", writeResult)
+	_, err := coll.InsertOne(context.TODO(), u)
 
 	return err
 }

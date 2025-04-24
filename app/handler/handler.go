@@ -9,7 +9,7 @@ import (
 	"github.com/a-h/templ"
 	"github.com/gin-gonic/gin"
 	"github.com/mickaelyoshua7674/Registrador-de-Treino/db"
-	"github.com/mickaelyoshua7674/Registrador-de-Treino/helper"
+	"github.com/mickaelyoshua7674/Registrador-de-Treino/util"
 	"github.com/mickaelyoshua7674/Registrador-de-Treino/model"
 	"github.com/mickaelyoshua7674/Registrador-de-Treino/view"
 )
@@ -45,9 +45,13 @@ func Register(ctx *gin.Context) {
 
 	username := ctx.Request.FormValue("username")
 	email := ctx.Request.FormValue("email")
-	password := ctx.Request.FormValue("password")
+	password, err := util.HashPassword(ctx.Request.FormValue("password"))
+	if err != nil {
+		log.Fatalf("Error hashing password: \n%v", err)
+	}
 
-	user := model.NewUser(username, email, password, time.Now(), time.Now())
+	loc := util.GetLocTimeZone()
+	user := model.NewUser(username, email, password, time.Now().In(loc), time.Now().In(loc))
 	err = user.Save(client)
 	if err != nil {
 		log.Fatalf("Error saving User: \n%v", err)
@@ -62,7 +66,7 @@ func ConfirmPass(ctx *gin.Context) {
 	confirm := ctx.Request.FormValue("confirmPassword")
 	fmt.Println(pass, confirm)
 
-	if !helper.ValidatePassword(pass, confirm) {
+	if !util.ValidatePassword(pass, confirm) {
 		ctx.String(http.StatusBadRequest, "Senhas estão diferentes")
 	} else {
 		ctx.Status(http.StatusOK)
