@@ -2,22 +2,31 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"os"
 )
 
+const (
+	UnitCelsius    = "C"
+	UnitFahrenheit = "F"
+)
+
 func convertFtoC(fahrenheit float64) float64 {
-	return (fahrenheit - 32) * 5 / 9
+	const factor = 5.0 / 9.0
+	return (fahrenheit - 32) * factor
 }
+
 func convertCtoF(celsius float64) float64 {
-	return (celsius * 9 / 5) + 32
+	const factor = 9.0 / 5.0
+	return (celsius * factor) + 32
 }
 
 // function that takes either a celcius or fahrenheit value and returns the converted value
 func convertTemperature(value float64, unit string) (float64, error) {
 	switch unit {
-	case "C":
+	case UnitCelsius:
 		return convertCtoF(value), nil
-	case "F":
+	case UnitFahrenheit:
 		return convertFtoC(value), nil
 	default:
 		return 0, fmt.Errorf("invalid unit %s", unit)
@@ -26,8 +35,7 @@ func convertTemperature(value float64, unit string) (float64, error) {
 
 func handleError(err error) {
 	if err != nil {
-		fmt.Printf("Error: %s\n", err)
-		os.Exit(1)
+		log.Fatalf("Error: %s", err)
 	}
 }
 
