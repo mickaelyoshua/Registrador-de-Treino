@@ -5,7 +5,7 @@ services:
       - registrador-app-network
     image: mongo
     volumes:
-      - ./db_data:/data/db
+      - /mongodata:/data/db
     restart: always # Always restart the container even if it is manually stoped
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
