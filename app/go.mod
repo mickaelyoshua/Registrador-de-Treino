@@ -1,4 +1,4 @@
-module github.com/mickaelyoshua7674/Registrador-de-Treino
+module github.com/mickaelyoshua/Registrador-de-Treino
 
 go 1.24.1
 

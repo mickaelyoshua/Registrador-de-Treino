@@ -8,10 +8,10 @@ import (
 
 	"github.com/a-h/templ"
 	"github.com/gin-gonic/gin"
-	"github.com/mickaelyoshua7674/Registrador-de-Treino/db"
-	"github.com/mickaelyoshua7674/Registrador-de-Treino/util"
-	"github.com/mickaelyoshua7674/Registrador-de-Treino/model"
-	"github.com/mickaelyoshua7674/Registrador-de-Treino/view"
+	"github.com/mickaelyoshua/Registrador-de-Treino/db"
+	"github.com/mickaelyoshua/Registrador-de-Treino/util"
+	"github.com/mickaelyoshua/Registrador-de-Treino/model"
+	"github.com/mickaelyoshua/Registrador-de-Treino/view"
 )
 
 func Render(ctx *gin.Context, status int, template templ.Component) error {
@@ -27,6 +27,14 @@ func HandleRenderError(err error) {
 // Main page
 func Index(ctx *gin.Context) {
 	err := Render(ctx, http.StatusOK, view.Index())
+	HandleRenderError(err)
+}
+func Hi(ctx *gin.Context) {
+	username, err := ctx.Cookie("username")
+	if err != nil {
+		log.Fatalf("Error getting cookie: \n%v", err)
+	}
+	err = Render(ctx, http.StatusOK, view.Hi(username))
 	HandleRenderError(err)
 }
 
@@ -78,6 +86,7 @@ func Login(ctx *gin.Context) {
 	user, err := model.FindUser(client, map[string]string{"email": email})
 	if err != nil {
 		log.Fatalf("Error finding user by email: \n%v", err)
+		ctx.String(http.StatusBadRequest, "Usuário não encontrado")
 		return
 	}
 
@@ -91,7 +100,8 @@ func Login(ctx *gin.Context) {
 		return
 	}
 
-	ctx.Redirect(http.StatusSeeOther, "/")
+	ctx.SetCookie("username", user.Username, 3600, "/", "", false, true)
+	ctx.Redirect(http.StatusSeeOther, "/hi")
 }
 
 func ConfirmPass(ctx *gin.Context) {
