@@ -11,6 +11,12 @@ func Routes(router *gin.Engine) {
 
 	// Authentication
 	router.GET("/register", handler.RegisterView)
+	router.GET("/login", handler.LoginView)
+
 	router.POST("/register", handler.Register)
+	router.POST("/login", handler.Login)
+
+	router.GET("/validate/email", handler.ValidateEmail)
+	router.GET("/validate/username", handler.ValidateUsername)
 	router.POST("/confirmPass", handler.ConfirmPass)
 }

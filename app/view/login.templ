@@ -1,0 +1,23 @@
+package view
+
+templ Login() {
+	@Base() {
+		<form action="/login" method="post">
+			<fieldset>
+				<legend>Login</legend>
+				<p>
+					<label for="email">Email:</label>
+					<input type="email" name="email" placeholder="Email"
+					hx-get="validate/email"
+					hx-target="next .error" required>
+					<span class="error"></span>
+				</p>
+				<p>
+					<label for="password">Password:</label>
+					<input type="password" name="password" placeholder="Password" required>
+				</p>
+				<button type="submit">Login</button>
+			</fieldset>
+		</form>
+	}
+}

@@ -8,7 +8,7 @@ package view
 import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
-func Register() templ.Component {
+func Login() templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -41,16 +41,7 @@ func Register() templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<form action=\"")
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			var templ_7745c5c3_Var3 templ.SafeURL = templ.URL("/register")
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(string(templ_7745c5c3_Var3)))
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "\" method=\"post\"><fieldset><legend>Registrar</legend><p><label for=\"username\">Usuário</label> <input type=\"text\" name=\"username\" value=\"\" placeholder=\"Usuário\" hx-get=\"/validate/username\" hx-target=\"next .error\" required> <span class=\"error\"></span></p><p><label for=\"email\">Email</label> <input type=\"email\" name=\"email\" value=\"\" placeholder=\"Email\" hx-get=\"/validate/email\" hx-target=\"next .error\" required> <span class=\"error\"></span></p><p><label for=\"password\">Senha</label> <input type=\"password\" name=\"password\" value=\"\" placeholder=\"Senha\" required></p><p><label for=\"password\">Confirmar Senha</label> <input type=\"password\" name=\"confirmPassword\" value=\"\" placeholder=\"Confirmar Senha\" hx-post=\"/confirmPass\" hx-trigger=\"change, keyup delay:200ms changed\" hx-include=\"[name=&#39;password&#39;]\" hx-target=\"next .error\" hx-target-4xx=\"next .error\" required> <span class=\"error\"></span></p><button>Registrar</button></fieldset></form>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<form action=\"/login\" method=\"post\"><fieldset><legend>Login</legend><p><label for=\"email\">Email:</label> <input type=\"email\" name=\"email\" placeholder=\"Email\" hx-get=\"validate/email\" hx-target=\"next .error\" required> <span class=\"error\"></span></p><p><label for=\"password\">Password:</label> <input type=\"password\" name=\"password\" placeholder=\"Password\" required></p><button type=\"submit\">Login</button></fieldset></form>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

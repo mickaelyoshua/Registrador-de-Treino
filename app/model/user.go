@@ -26,6 +26,16 @@ func NewUser(username, email, password string, created, updated time.Time) User 
 	}
 }
 
+func FindUser(client *mongo.Client, filter any) (*User, error) {
+	coll := client.Database("workout_register").Collection("user")
+	var user User
+	err := coll.FindOne(context.TODO(), filter).Decode(&user)
+	if err != nil {
+		return nil, err
+	}
+	return &user, nil
+}
+
 func (u User) Save(client *mongo.Client) error {
 	coll := client.Database("workout_register").Collection("user")
 	_, err := coll.InsertOne(context.TODO(), u)

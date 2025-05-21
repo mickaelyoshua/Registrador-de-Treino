@@ -35,6 +35,10 @@ func RegisterView(ctx *gin.Context) {
 	err := Render(ctx, http.StatusOK, view.Register())
 	HandleRenderError(err)
 }
+func LoginView(ctx *gin.Context) {
+	err := Render(ctx, http.StatusOK, view.Login())
+	HandleRenderError(err)
+}
 
 func Register(ctx *gin.Context) {
 	client, err := db.GetClient()
@@ -50,15 +54,40 @@ func Register(ctx *gin.Context) {
 		log.Fatalf("Error hashing password: \n%v", err)
 	}
 
-	loc := util.GetLocTimeZone()
-	log.Println()
-	log.Println(loc)
-	log.Println()
-	created := time.Now().In(loc)
+	created := time.Now()
 	user := model.NewUser(username, email, password, created, created)
 	err = user.Save(client)
 	if err != nil {
 		log.Fatalf("Error saving User: \n%v", err)
+		return
+	}
+
+	ctx.Redirect(http.StatusSeeOther, "/")
+}
+
+func Login(ctx *gin.Context) {
+	client, err := db.GetClient()
+	if err != nil {
+		log.Fatalf("Error getting client from MongoDB: \n%v", err)
+		return
+	}
+
+	email := ctx.Request.FormValue("email")
+	password := ctx.Request.FormValue("password")
+
+	user, err := model.FindUser(client, map[string]string{"email": email})
+	if err != nil {
+		log.Fatalf("Error finding user by email: \n%v", err)
+		return
+	}
+
+	if user == nil {
+		ctx.String(http.StatusBadRequest, "Usuário não encontrado")
+		return
+	}
+
+	if !util.CheckPasswordHash(password, user.Password) {
+		ctx.String(http.StatusBadRequest, "Senha incorreta")
 		return
 	}
 
