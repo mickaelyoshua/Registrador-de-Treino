@@ -21,46 +21,46 @@ func HashPassword(pass string) (string, error) {
 
 func CheckPasswordHash(pass, hashedPass string) bool {
 	err := bcrypt.CompareHashAndPassword([]byte(hashedPass), []byte(pass))
-	return err==nil
+	return err == nil
 }
 
 const secretKey = "supersecret"
 
-func GenerateToken(username string, id string) (string, error) {
+func GenerateToken(email string, id string) (string, error) { // Ensure id is a string
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"username": username,
-		"id": id,
-		"expiration": time.Now().Add(time.Hour*2).Unix(),
+		"email":      email,
+		"id":         id, // No changes needed here
+		"expiration": time.Now().Add(2 * time.Hour).Unix(),
 	})
 	return token.SignedString([]byte(secretKey))
 }
 
-func VerifyToken(token string) (string, error) {
+func ValidateToken(token string) (map[string]any, error) {
 	parsedToken, err := jwt.Parse(token, func(token *jwt.Token) (any, error) {
 		_, ok := token.Method.(*jwt.SigningMethodHMAC)
 		if !ok {
-			return "", errors.New("unexpectd signing method")
+			return nil, errors.New("unexpected signing method")
 		}
 		return []byte(secretKey), nil
 	})
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
 	if !parsedToken.Valid {
-		return "", errors.New("invalid token")
+		return nil, errors.New("invalid token")
 	}
 
-	_, ok := parsedToken.Claims.(jwt.MapClaims)
+	claims, ok := parsedToken.Claims.(jwt.MapClaims)
 	if !ok {
-		return "", errors.New("invalid token claims")
+		return nil, errors.New("invalid token claims")
 	}
 
-	//id := claims["id"]
-	return "", nil
+	return claims, nil
 }
 
 const location = "America/Sao_Paulo"
+
 func GetLocTimeZone() *time.Location {
 	loc, err := time.LoadLocation(location)
 	if err != nil {

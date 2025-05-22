@@ -8,10 +8,10 @@ import (
 )
 
 type User struct {
-	Id uint `bson:",omitempty"`
-	Username string
-	Email string
-	Password string
+	Id        string    `bson:"_id,omitempty"` // Changed from uint to string
+	Username  string
+	Email     string
+	Password  string
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }
@@ -26,14 +26,14 @@ func NewUser(username, email, password string, created, updated time.Time) User 
 	}
 }
 
-func FindUser(client *mongo.Client, filter any) (*User, error) {
+func FindUser(client *mongo.Client, filter any) (User, error) {
 	coll := client.Database("workout_register").Collection("user")
 	var user User
 	err := coll.FindOne(context.TODO(), filter).Decode(&user)
 	if err != nil {
-		return nil, err
+		return User{}, err
 	}
-	return &user, nil
+	return user, nil
 }
 
 func (u User) Save(client *mongo.Client) error {

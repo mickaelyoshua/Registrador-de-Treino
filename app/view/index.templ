@@ -1,7 +1,10 @@
 package view
+import (
+	"github.com/mickaelyoshua/Registrador-de-Treino/model"
+)
 
-templ Index() {
+templ Index(user model.User) {
 	@Base() {
-		<h1>Olá do Registrador!</h1>
+		<h1>Olá {user.Username}!</h1>
 	}
 }

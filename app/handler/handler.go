@@ -26,7 +26,32 @@ func HandleRenderError(err error) {
 
 // Main page
 func Index(ctx *gin.Context) {
-	err := Render(ctx, http.StatusOK, view.Index())
+	token, err := ctx.Cookie("token")
+	if err != nil {
+		log.Println("Token not found or invalid:", err)
+		ctx.Redirect(http.StatusSeeOther, "/login")
+		return
+	}
+
+	retrievedToken, err := util.ValidateToken(token)
+	if err != nil {
+		log.Println("Invalid or expired token:", err)
+		ctx.Redirect(http.StatusSeeOther, "/login")
+		return
+	}
+
+	client, err := db.GetClient()
+	if err != nil {
+		log.Fatalf("Error getting client from MongoDB: \n%v", err)
+		return
+	}
+	user, err := model.FindUser(client, map[string]string{"_id": retrievedToken["id"].(string)}) // Ensure the ID is treated as a string
+	if err != nil {
+		log.Fatalf("Error finding user by ID: \n%v", err)
+		return
+	}
+
+	err = Render(ctx, http.StatusOK, view.Index(user))
 	HandleRenderError(err)
 }
 func Hi(ctx *gin.Context) {
@@ -70,6 +95,14 @@ func Register(ctx *gin.Context) {
 		return
 	}
 
+	token, err := util.GenerateToken(email, user.Id) // Ensure user.Id is passed as a string
+	if err != nil {
+		log.Fatalf("Error generating token: \n%v", err)
+		ctx.String(http.StatusBadRequest, "Erro ao gerar token")
+		return
+	}
+	ctx.SetCookie("token", token, int(2*time.Hour.Seconds()), "/", "", false, true)
+
 	ctx.Redirect(http.StatusSeeOther, "/")
 }
 
@@ -90,7 +123,7 @@ func Login(ctx *gin.Context) {
 		return
 	}
 
-	if user == nil {
+	if user.Username == "" {
 		ctx.String(http.StatusBadRequest, "Usuário não encontrado")
 		return
 	}

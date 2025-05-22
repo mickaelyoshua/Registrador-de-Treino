@@ -3,12 +3,18 @@ package main
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/mickaelyoshua/Registrador-de-Treino/handler"
+	"github.com/mickaelyoshua/Registrador-de-Treino/middleware"
 )
 
 func Routes(router *gin.Engine) {
+
+	// Middleware
+	authenticate := router.Group("/")
+	authenticate.Use(middleware.Authenticate)
+
 	// Main page
-	router.GET("/", handler.Index)
-	router.GET("/hi", handler.Hi)
+	authenticate.GET("/", handler.Index)
+	authenticate.GET("/hi", handler.Hi)
 
 	// Authentication
 	router.GET("/register", handler.RegisterView)
