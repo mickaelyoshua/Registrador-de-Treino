@@ -16,6 +16,11 @@ func Routes(router *gin.Engine) {
 	authenticate.GET("/", handler.Index)
 	authenticate.GET("/hi", handler.Hi)
 
+	// Workout
+	authenticate.GET("/workout", handler.WorkoutView)
+	authenticate.GET("/workout/add", handler.WorkoutAddView)
+	authenticate.POST("/workout/add", handler.WorkoutAdd)
+
 	// Authentication
 	router.GET("/register", handler.RegisterView)
 	router.GET("/login", handler.LoginView)

@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -26,10 +27,10 @@ func CheckPasswordHash(pass, hashedPass string) bool {
 
 const secretKey = "supersecret"
 
-func GenerateToken(email string, id string) (string, error) { // Ensure id is a string
+func GenerateToken(email string, id primitive.ObjectID) (string, error) { // Use ObjectID for ID
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"email":      email,
-		"id":         id, // No changes needed here
+		"id":         id.Hex(), // Convert ObjectID to Hex string
 		"expiration": time.Now().Add(2 * time.Hour).Unix(),
 	})
 	return token.SignedString([]byte(secretKey))

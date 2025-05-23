@@ -4,23 +4,25 @@ import (
 	"context"
 	"time"
 
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/v2/mongo"
 )
 
 type User struct {
-	Id        string    `bson:"_id,omitempty"` // Changed from uint to string
-	Username  string
-	Email     string
-	Password  string
-	CreatedAt time.Time
-	UpdatedAt time.Time
+	Id        primitive.ObjectID `bson:"_id"` // Use ObjectID for MongoDB's _id field
+	Username  string             `bson:"username"`
+	Email     string             `bson:"email"`
+	Password  string             `bson:"password"`
+	CreatedAt time.Time          `bson:"created_at"`
+	UpdatedAt time.Time          `bson:"updated_at"`
 }
 
 func NewUser(username, email, password string, created, updated time.Time) User {
 	return User{
-		Username: username,
-		Email: email,
-		Password: password,
+		Id:        primitive.NewObjectID(), // Generate a new ObjectID
+		Username:  username,
+		Email:     email,
+		Password:  password,
 		CreatedAt: created,
 		UpdatedAt: updated,
 	}

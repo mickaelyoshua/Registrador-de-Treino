@@ -6,6 +6,7 @@ require (
 	github.com/a-h/templ v0.3.865
 	github.com/gin-gonic/gin v1.10.0
 	github.com/golang-jwt/jwt/v5 v5.2.2
+	go.mongodb.org/mongo-driver v1.17.3
 	go.mongodb.org/mongo-driver/v2 v2.2.0
 	golang.org/x/crypto v0.37.0
 )

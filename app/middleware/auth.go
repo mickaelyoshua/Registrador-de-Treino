@@ -14,14 +14,15 @@ func Authenticate(ctx *gin.Context) {
 		ctx.Redirect(http.StatusSeeOther, "/login")
 		return
 	}
-	// Validate the token
+
 	retrievedToken, err := util.ValidateToken(token)
 	if err != nil {
 		ctx.Redirect(http.StatusSeeOther, "/login")
 		return
 	}
+
 	// Check if the token is expired
-	if retrievedToken["expiration"].(int64) < time.Now().Unix() {
+	if int64(retrievedToken["expiration"].(float64)) < time.Now().Unix() {
 		ctx.Redirect(http.StatusSeeOther, "/login")
 		return
 	}

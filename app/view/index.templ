@@ -6,5 +6,10 @@ import (
 templ Index(user model.User) {
 	@Base() {
 		<h1>Olá {user.Username}!</h1>
+		// two buttons side by side, one for add a new workout and one for view all workouts
+		<div class="d-flex justify-content-center">
+			<a href="/workout/add">Adicionar Treino</a>
+			<a href="/workout">Ver Treinos</a>
+		</div>
 	}
 }

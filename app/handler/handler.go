@@ -8,6 +8,8 @@ import (
 
 	"github.com/a-h/templ"
 	"github.com/gin-gonic/gin"
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"github.com/mickaelyoshua/Registrador-de-Treino/db"
 	"github.com/mickaelyoshua/Registrador-de-Treino/util"
 	"github.com/mickaelyoshua/Registrador-de-Treino/model"
@@ -45,7 +47,15 @@ func Index(ctx *gin.Context) {
 		log.Fatalf("Error getting client from MongoDB: \n%v", err)
 		return
 	}
-	user, err := model.FindUser(client, map[string]string{"_id": retrievedToken["id"].(string)}) // Ensure the ID is treated as a string
+
+	// Convert the ID from the token to ObjectID
+	objectID, err := primitive.ObjectIDFromHex(retrievedToken["id"].(string))
+	if err != nil {
+		log.Fatalf("Error converting ID to ObjectID: \n%v", err)
+		return
+	}
+
+	user, err := model.FindUser(client, bson.M{"_id": objectID})
 	if err != nil {
 		log.Fatalf("Error finding user by ID: \n%v", err)
 		return
@@ -95,7 +105,7 @@ func Register(ctx *gin.Context) {
 		return
 	}
 
-	token, err := util.GenerateToken(email, user.Id) // Ensure user.Id is passed as a string
+	token, err := util.GenerateToken(email, user.Id) // Pass ObjectID directly
 	if err != nil {
 		log.Fatalf("Error generating token: \n%v", err)
 		ctx.String(http.StatusBadRequest, "Erro ao gerar token")
@@ -134,7 +144,7 @@ func Login(ctx *gin.Context) {
 	}
 
 	ctx.SetCookie("username", user.Username, 3600, "/", "", false, true)
-	ctx.Redirect(http.StatusSeeOther, "/hi")
+	ctx.Redirect(http.StatusSeeOther, "/")
 }
 
 func ConfirmPass(ctx *gin.Context) {
