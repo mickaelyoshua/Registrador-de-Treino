@@ -41,7 +41,7 @@ func Login() templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<form action=\"/login\" method=\"post\"><fieldset><legend>Login</legend><p><label for=\"email\">Email:</label> <input type=\"email\" name=\"email\" placeholder=\"Email\" required> <span class=\"error\"></span></p><p><label for=\"password\">Password:</label> <input type=\"password\" name=\"password\" placeholder=\"Password\" required></p><button type=\"submit\">Login</button></fieldset></form>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<form action=\"/login\" method=\"post\"><fieldset><legend>Login</legend><p><label for=\"email\">Email:</label> <input type=\"email\" name=\"email\" placeholder=\"Email\" required> <span class=\"error\"></span></p><p><label for=\"password\">Password:</label> <input type=\"password\" name=\"password\" placeholder=\"Password\" required></p><button type=\"submit\">Login</button></fieldset></form><p>Don't have an account? <a href=\"/register\">Register here</a></p>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

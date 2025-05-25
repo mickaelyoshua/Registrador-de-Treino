@@ -1,0 +1,26 @@
+package view
+
+import (
+	"github.com/mickaelyoshua/Registrador-de-Treino/model"
+	"strings"
+)
+
+templ Workouts(workouts []model.Workout) {
+	@Base() {
+		// A html / templ page that shows a workout with title and body
+		for _, workout := range workouts {
+			<div>
+				<h3>{ workout.Title }</h3>
+				@templ.Raw(strings.ReplaceAll(workout.Description, "\n", "<br>") + "<br>")
+				<a href="#"
+					hx-delete={ templ.URL("/workout/delete/" + workout.Id.Hex()) }
+					hx-swap="outerHTML swap:1s"
+					hx-confirm="Tem certeza?"
+					hx-target="closest div">Deletar</a>
+				<br>
+			</div>
+		}
+		<br>
+		<a href={ templ.URL("/workout/create") }>Criar</a>
+	}
+}

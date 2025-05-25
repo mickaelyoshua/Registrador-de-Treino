@@ -52,13 +52,13 @@ func Index(user model.User) templ.Component {
 			var templ_7745c5c3_Var3 string
 			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(user.Username)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `view/index.templ`, Line: 8, Col: 25}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `view/index.templ`, Line: 9, Col: 26}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "!</h1> <div class=\"d-flex justify-content-center\"><a href=\"/workout/add\">Adicionar Treino</a> <a href=\"/workout/view\">Ver Treinos</a></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "!</h1> <div class=\"d-flex justify-content-center\"><a href=\"/workout\">Ver Treinos</a></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

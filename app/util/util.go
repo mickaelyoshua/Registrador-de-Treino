@@ -2,9 +2,11 @@ package util
 
 import (
 	"errors"
+	"fmt"
 	"log"
 	"time"
 
+	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"golang.org/x/crypto/bcrypt"
@@ -69,4 +71,19 @@ func GetLocTimeZone() *time.Location {
 		return nil
 	}
 	return loc
+}
+
+func GetTokenFromCookie(ctx *gin.Context) (map[string]any, error) {
+	// Get the token from the cookie
+	cookie, err := ctx.Cookie("token")
+	if err != nil {
+		log.Printf("Error getting cookie: \n%v", err)
+		return nil, fmt.Errorf("error getting cookie: %w", err)
+	}
+	retrievedToken, err := ValidateToken(cookie)
+	if err != nil {
+		log.Printf("Invalid or expired token: \n%v", err)
+		return nil, fmt.Errorf("invalid or expired token: %w", err)
+	}
+	return retrievedToken, nil
 }

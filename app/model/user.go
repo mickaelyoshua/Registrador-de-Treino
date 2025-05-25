@@ -4,8 +4,9 @@ import (
 	"context"
 	"time"
 
+	"github.com/mickaelyoshua/Registrador-de-Treino/db"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
-	"go.mongodb.org/mongo-driver/v2/mongo"
 )
 
 type User struct {
@@ -28,18 +29,48 @@ func NewUser(username, email, password string, created, updated time.Time) User 
 	}
 }
 
-func FindUser(client *mongo.Client, filter any) (User, error) {
+func FindUserByToken(retrievedToken map[string]any) (User, error) {
+	client, err := db.GetClient()
+	if err != nil {
+		return User{}, err
+	}
+
+	objectID, err := primitive.ObjectIDFromHex(retrievedToken["id"].(string))
+	if err != nil {
+		return User{}, err
+	}
+	filter := bson.M{"_id": objectID}
 	coll := client.Database("workout_register").Collection("user")
 	var user User
-	err := coll.FindOne(context.TODO(), filter).Decode(&user)
+	err = coll.FindOne(context.TODO(), filter).Decode(&user)
 	if err != nil {
 		return User{}, err
 	}
 	return user, nil
 }
 
-func (u User) Save(client *mongo.Client) error {
+func FindUserByFilter(filter bson.M) (User, error) {
+	client, err := db.GetClient()
+	if err != nil {
+		return User{}, err
+	}
+
 	coll := client.Database("workout_register").Collection("user")
-	_, err := coll.InsertOne(context.TODO(), u)
+	var user User
+	err = coll.FindOne(context.TODO(), filter).Decode(&user)
+	if err != nil {
+		return User{}, err
+	}
+	return user, nil
+}
+
+func (u User) Save() error {
+	client, err := db.GetClient()
+	if err != nil {
+		return err
+	}
+
+	coll := client.Database("workout_register").Collection("user")
+	_, err = coll.InsertOne(context.TODO(), u)
 	return err
 }

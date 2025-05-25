@@ -7,7 +7,6 @@ import (
 )
 
 func Routes(router *gin.Engine) {
-
 	// Middleware
 	authenticate := router.Group("/")
 	authenticate.Use(middleware.Authenticate)
@@ -18,8 +17,9 @@ func Routes(router *gin.Engine) {
 
 	// Workout
 	authenticate.GET("/workout", handler.WorkoutView)
-	authenticate.GET("/workout/add", handler.WorkoutAddView)
-	authenticate.POST("/workout/add", handler.WorkoutAdd)
+	authenticate.GET("/workout/create", handler.WorkoutCreateView)
+	authenticate.POST("/workout/create", handler.WorkoutCreate)
+	authenticate.DELETE("/workout/delete/:id", handler.WorkoutDelete)
 
 	// Authentication
 	router.GET("/register", handler.RegisterView)

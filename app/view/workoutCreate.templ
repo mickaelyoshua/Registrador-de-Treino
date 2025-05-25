@@ -1,0 +1,18 @@
+package view
+
+templ WorkoutCreate() {
+	@Base() {
+		// A html / templ page that shows a workout with title and body
+		<form action="/workout/create" method="POST">
+			<div class="mb-3">
+				<label for="title" class="form-label">Título</label>
+				<input type="text" class="form-control" name="title" required>
+			</div>
+			<div class="mb-3">
+				<label for="description" class="form-label">Descrição</label>
+				<textarea class="form-control" name="description" rows="10"></textarea>
+			</div>
+			<button type="submit" class="btn btn-primary">Criar</button>
+		</form>
+	}
+}
