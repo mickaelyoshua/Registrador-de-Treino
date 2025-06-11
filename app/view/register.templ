@@ -2,7 +2,7 @@ package view
 
 templ Register() {
 	@Base() {
-		<form action={ templ.URL("/register") } method="post">
+		<form action="/register" method="post">
 			<fieldset>
 				<legend>Registrar</legend>
 				<p>
@@ -37,7 +37,7 @@ templ Register() {
 			</fieldset>
 		</form>
 		<p>
-			Já tem uma conta? <a href={ templ.URL("/login") }>Faça login aqui</a>
+			Já tem uma conta? <a href="/login">Faça login aqui</a>
 		</p>
 	}
 }
